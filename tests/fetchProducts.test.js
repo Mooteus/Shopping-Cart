@@ -20,4 +20,8 @@ describe('1 - Teste a função fecthProducts', () => {
   it('Verifica se o retorno de fetchProducts é igual a computadorSearch', async () => {
     expect(await fetchProducts('computador')).toBe(computadorSearch);
   });
+
+  it('Verifica se ao chamar fetchProducts sem argumento retorna uma mensagem de erro', async () => {
+    await fetchProducts().catch(error => expect(error).toEqual(new Error('You must provide an url')));
+  });
 });
