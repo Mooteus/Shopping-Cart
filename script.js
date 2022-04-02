@@ -87,7 +87,21 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
+function loading() {
+  const container = document.querySelector('.items');
+  const load = document.createElement('label');
+  load.innerText = 'carregando...';
+  load.className = 'loading';
+  container.appendChild(load);
+}
+
+function removeLoading() {
+  const load = document.querySelector('.loading');
+  load.parentNode.removeChild(load);
+}
+
 const renderItem = async (arg) => {
+  loading();
   const data = await fetchProducts(arg);
   data.results.forEach((element) => {
     const objSend = {
@@ -98,6 +112,7 @@ const renderItem = async (arg) => {
       const itemsCointainer = document.querySelector('.items');
       itemsCointainer.appendChild(section);
   });
+  removeLoading();
 };
 
 function clearCart() {
