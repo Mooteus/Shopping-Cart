@@ -84,6 +84,17 @@ const renderItem = async (arg) => {
   });
 };
 
+function clearCart() {
+  const items = document.querySelector('.cart__items');
+  items.innerHTML = '';
+  
+  saveCartItem = [];
+  localStorage.setItem('cart', JSON.stringify(saveCartItem));
+}
+
+const clearCartClick = document.querySelector('.empty-cart');
+clearCartClick.addEventListener('click', clearCart);
+
 window.onload = () => { 
   renderItem('computador');
   loadCart();
