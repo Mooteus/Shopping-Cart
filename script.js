@@ -16,8 +16,12 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+function deleteItemFromCart(event) {
+  event.target.parentNode.removeChild(event.target);
+}
+
 function cartItemClickListener(event) {
-  
+  deleteItemFromCart(event);
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
