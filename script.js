@@ -1,3 +1,4 @@
+console.log(localStorage.getItem('cart'));
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -32,12 +33,30 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+let saveCartItem = [];
+if (localStorage.getItem('cart')) saveCartItem = JSON.parse(localStorage.getItem('cart'));
+
+function loadCart() {
+  const cartContainer = document.querySelector('.cart__items');
+  saveCartItem.forEach(async (e) => {
+    const product = await fetchItem(e);
+    const objReturn = { sku: product.id, name: product.title, salePrice: product.price };
+    cartContainer.appendChild(createCartItemElement(objReturn));
+  });
+}
+
+function saveCart(id) {
+  saveCartItem.push(id);
+  localStorage.setItem('cart', JSON.stringify(saveCartItem));
+}
+
 async function addToCart(e) {
   const cartContainer = document.querySelector('.cart__items');
   const id = getSkuFromProductItem(e.target.parentElement);
   const product = await fetchItem(id);
   const objReturn = { sku: id, name: product.title, salePrice: product.price };
   cartContainer.appendChild(createCartItemElement(objReturn));
+  saveCart(product.id);
 }
 
 function createProductItemElement({ sku, name, image }) {
@@ -67,4 +86,5 @@ const renderItem = async (arg) => {
 
 window.onload = () => { 
   renderItem('computador');
+  loadCart();
 };
