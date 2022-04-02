@@ -1,6 +1,6 @@
 let saveCartItem = [];
 if (localStorage.getItem('cart')) saveCartItem = JSON.parse(localStorage.getItem('cart'));
-console.log(localStorage.getItem('cart'));
+const cartContainer = document.querySelector('.cart__items');
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -36,8 +36,6 @@ function createCartItemElement({ sku, name, salePrice }) {
 }
 
 function loadCart() {
-  const cartContainer = document.querySelector('.cart__items');
-
   saveCartItem.forEach(async (e) => {
     const product = await fetchItem(e);
     const objReturn = { sku: product.id, name: product.title, salePrice: product.price };
@@ -51,7 +49,6 @@ function saveCart(id) {
 }
 
 async function addToCart(e) {
-  const cartContainer = document.querySelector('.cart__items');
   const id = getSkuFromProductItem(e.target.parentElement);
   const product = await fetchItem(id);
   const objReturn = { sku: id, name: product.title, salePrice: product.price };
@@ -85,8 +82,7 @@ const renderItem = async (arg) => {
 };
 
 function clearCart() {
-  const items = document.querySelector('.cart__items');
-  items.innerHTML = '';
+  cartContainer.innerHTML = '';
   
   saveCartItem = [];
   localStorage.setItem('cart', JSON.stringify(saveCartItem));
