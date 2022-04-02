@@ -1,4 +1,7 @@
+let saveCartItem = [];
+if (localStorage.getItem('cart')) saveCartItem = JSON.parse(localStorage.getItem('cart'));
 console.log(localStorage.getItem('cart'));
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -17,27 +20,24 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-function deleteItemFromCart(event) {
+function deleteItemFromCart(event, id) {
   event.target.parentNode.removeChild(event.target);
-}
-
-function cartItemClickListener(event) {
-  deleteItemFromCart(event);
+  const removeId = saveCartItem.indexOf(id);
+  saveCartItem.splice(removeId, 1);
+  localStorage.setItem('cart', JSON.stringify(saveCartItem));
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', (e) => deleteItemFromCart(e, sku));
   return li;
 }
 
-let saveCartItem = [];
-if (localStorage.getItem('cart')) saveCartItem = JSON.parse(localStorage.getItem('cart'));
-
 function loadCart() {
   const cartContainer = document.querySelector('.cart__items');
+
   saveCartItem.forEach(async (e) => {
     const product = await fetchItem(e);
     const objReturn = { sku: product.id, name: product.title, salePrice: product.price };
