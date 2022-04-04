@@ -8,5 +8,6 @@ describe('4 - Teste a função saveCartItems', () => {
     const arg = '<ol><li>Item</li></ol>';
     saveCartItems(arg);
     expect(localStorage.setItem).toHaveBeenCalled();
+    expect(localStorage.setItem).toHaveBeenCalled('cartItems', arg);
   });
 });
